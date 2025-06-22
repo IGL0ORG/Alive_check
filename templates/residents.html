@@ -1,0 +1,23 @@
+{% extends 'basic.html' %}
+
+
+{% block title %}
+Страница о нас
+{% endblock %}
+
+
+
+{% block body %}
+<div class="container mt-5">
+
+<h1> Резиденты</h1>
+    {% for items in residents%}
+    <div class="alert alert-info">
+        <h2>{{items.room}}</h2>
+        <p>{{items.name}}</p>
+        <p><b>{{items.telephone_number}}</b></p>
+        <a href="/residents/{{items.id}}" class="btn btn-warning"> Профиль</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
