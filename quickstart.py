@@ -3,7 +3,7 @@ from google.oauth2.service_account import Credentials
 from flask import Flask, request
 
 app = Flask(__name__)
-
+# я тут?
 # Авторизация
 SCOPE = ['https://www.googleapis.com/auth/spreadsheets']
 CREDS = Credentials.from_service_account_file('credentials.json', scopes=SCOPE)
