@@ -27,7 +27,11 @@ def check_ip():
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    
+    if request.method == "POST":
+        button1=request.form.get('button')
+        if button1 == 'test':
+
+            print(f"\t\t\t\t\tButton has been activate")
     return render_template('home.html')
 
 
@@ -70,7 +74,7 @@ def add_resident():
 
 @app.route('/s')
 def testing():
-    return sheet.get("A1:D4")
+    return sheet.get()
 
 
 

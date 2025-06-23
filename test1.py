@@ -1,14 +1,12 @@
+import gspread
+from google.oauth2.service_account import Credentials
 
-with open('alive.txt','r',encoding="utf-8") as f:
-    alive = f.readlines()
-class People:
-    ''' Человек, имеющий следующие данные: UID, ФИО, группа '''
-    def __init__(self,id='0000',surname='Иванов', name='Иван', secondname='Иванович'):
-        self.user_id=id
-        self.surname=surname
-        self.name=name
-        self.secondname=secondname
-    
-stepka=People()
-print(stepka.name)
-print(alive)
+SCOPE = ['https://www.googleapis.com/auth/spreadsheets']
+CREDS = Credentials.from_service_account_file('credentials.json', scopes=SCOPE)
+client = gspread.authorize(CREDS)
+
+# Открытие таблицы
+SPREADSHEET_ID = '1baoDiv8FVUQ6Khk9DZpiaiBh1N0eqgzo-K9P3DogbNA'
+sheet = client.open_by_key(SPREADSHEET_ID).sheet1
+data=sheet.get_all_cells()
+print(data)
