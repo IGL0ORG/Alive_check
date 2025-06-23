@@ -1,24 +1,17 @@
 from flask import Flask, render_template, url_for, request, abort, redirect
-from flask_sqlalchemy import SQLAlchemy
-##from sqlalchemy import Integer, String
-##from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+import gspread
+from google.oauth2.service_account import Credentials
 
 
-app= Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///residents.db"
-db = SQLAlchemy (app)
+app = Flask(__name__)
+SCOPE = ['https://www.googleapis.com/auth/spreadsheets']
+CREDS = Credentials.from_service_account_file('credentials.json', scopes=SCOPE)
+client = gspread.authorize(CREDS)
 
+# Открытие таблицы
+SPREADSHEET_ID = '1baoDiv8FVUQ6Khk9DZpiaiBh1N0eqgzo-K9P3DogbNA'
+sheet = client.open_by_key(SPREADSHEET_ID).sheet1
 
-class Resident(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name:Mapped[str] =  mapped_column(nullable=False)
-    room:Mapped[int] =  mapped_column(default=000)
-    telephone_number =  db.Column(db.String(15), default = '+79521234567')
-    
-    def __repr__(self):
-        return '<Resident %r>' % self.id
-
-    
 
 ALLOWED_IPS = [
         '127.0.0.1'
@@ -32,8 +25,9 @@ def check_ip():
 
 
 @app.route('/')
-@app.route('/home')
+@app.route('/home', methods=['GET', 'POST'])
 def home():
+    
     return render_template('home.html')
 
 
@@ -49,37 +43,34 @@ def user(name, id):
 
 @app.route('/residents')
 def residents():
-    residents = Resident.query.order_by(Resident.room).all()
-    return render_template('residents.html', residents=residents)
+    # Получаем все данные
+    residents = sheet.get_all_records()
+    for user in len(residents):
+        return {residents}
 
 
 
-@app.route('/residents/<int:id>')
-def resident_profile(id):
-    resident = Resident.query.get(id)
-    return render_template('бб', resident=resident)
-
-
-
-
-@app.route('/create-resident', methods=['POST', 'GET'])
-def create_resident():
+@app.route('/add', methods=['POST', "GET"])
+def add_resident():
+    data = request.form
+    # Формируем новую строку
     if request.method == 'POST':
-        name = request.form["name"]
-        room = request.form["room"]
-        telephone_number = request.form["telephone_number"]
-
-        resident=Resident(name=name, room=room, telephone_number=telephone_number)
-
-        try:
-            db.session.add(resident)
-            db.session.commit()
-            return redirect('/')
-        except:
-            return "Ошибка при записи"
+        new_row = [
+            data['id'],
+            data['name'],
+            data['room'],
+            data['phone'],
+            data['check_in_date']
+        ]
+        # Добавляем в конец таблицы
+        sheet.append_row(new_row)
     else:
         return (render_template('create_resident.html'))
 
+
+@app.route('/s')
+def testing():
+    return sheet.get("A1:D4")
 
 
 
