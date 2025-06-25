@@ -1,6 +1,9 @@
+'''Серверная часть Бэкенд СУБД.'''
+
 from flask import Flask, render_template, url_for, request, abort, redirect
 import gspread
 from google.oauth2.service_account import Credentials
+import database_inter as db
 
 
 app = Flask(__name__)
@@ -9,7 +12,7 @@ CREDS = Credentials.from_service_account_file('credentials.json', scopes=SCOPE)
 client = gspread.authorize(CREDS)
 
 # Открытие таблицы
-SPREADSHEET_ID = '1baoDiv8FVUQ6Khk9DZpiaiBh1N0eqgzo-K9P3DogbNA'
+SPREADSHEET_ID = '1UD0ZqwPg11p4-dGnj84K16eAGtun4NZMfL_SQgkgYzE'
 sheet = client.open_by_key(SPREADSHEET_ID).sheet1
 
 
