@@ -12,7 +12,7 @@ CREDS = Credentials.from_service_account_file('credentials.json', scopes=SCOPE)
 client = gspread.authorize(CREDS)
 
 # Открытие таблицы
-SPREADSHEET_ID = '1UD0ZqwPg11p4-dGnj84K16eAGtun4NZMfL_SQgkgYzE'
+SPREADSHEET_ID = '1baoDiv8FVUQ6Khk9DZpiaiBh1N0eqgzo-K9P3DogbNA'
 sheet = client.open_by_key(SPREADSHEET_ID).sheet1
 
 
@@ -56,21 +56,34 @@ def residents():
         return {residents}
 
 
-
-@app.route('/add', methods=['POST', "GET"])
+@app.route('/add')
+@app.route('/create_resident', methods=['POST', "GET"])
 def add_resident():
-    data = request.form
+    data_from_form = request.form
     # Формируем новую строку
     if request.method == 'POST':
-        new_row = [
-            data['id'],
-            data['name'],
-            data['room'],
-            data['phone'],
-            data['check_in_date']
-        ]
-        # Добавляем в конец таблицы
-        sheet.append_row(new_row)
+        new_people={}
+        try:
+            for cell in sheet.row_values(1):
+
+                info=data_from_form[str(cell)]
+                print(sheet.find(cell).value)
+                new_people[sheet.find(cell).value]=info
+            print(new_people)
+        except:
+            print('произошла ошибка')
+
+            new_row = [
+                data_from_form['id'],
+                data_from_form['name'],
+                data_from_form['room'],
+                data_from_form['phone'],
+                data_from_form['check_in_date']
+            ]
+            # Добавляем в конец таблицы
+        sheet.append_row(new_people)
+        return redirect('/')
+
     else:
         return (render_template('create_resident.html'))
 

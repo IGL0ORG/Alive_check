@@ -1,11 +1,30 @@
 {%extends 'basic.html'%}
 
 {%block body%}
-<h1> О нас</h1>
-<form action="POST">
-<input type="text", name="id" id="id", class="form-control"><br>
-<textarea type="text", name="name" id="name", class="form-control"></textarea><br>
-<textarea type="text", name="phone" id="phone", class="form-control"></textarea><br>
-<input type="submit", class="btn btn-success" title="Отправить" >
-</form>
+<div class="container mt-5">
+        <h1 class="mb-4">Добавить нового пользователя</h1>
+        <form action="/create_resident_data" method="post">
+            <div class="mb-3">
+                <label for="full_name" class="form-label">ФИО</label><br>
+                <input type="text" class="form-control" id="ФИО" name="ФИО" required>
+            </div>
+            <br>
+            <div class="mb-3">
+
+                <input type="text" class="form-control" placeholder="Комната" id="комната" name="комната" required>
+            </div>
+            
+            <div class="mb-3">
+                
+                <input type="text" class="form-control" placeholder="User ID" id="user_id" name="user_id" required>
+            </div>
+            
+            <div class="mb-3">
+                
+                <input type="text" class="form-control" id="группа" placeholder="Группа" name="группа" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Добавить в таблицу</button>
+        </form>
+</div>
 {%endblock%}

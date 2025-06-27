@@ -2,6 +2,12 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static',filename='css/global.css')}}">
     <title>{%block title%} {%endblock%}</title>
@@ -10,8 +16,9 @@
     {%block body%}
     {%endblock%}
 </body>
-<footer>
+<footer class="container">
     <strong>Наш вк </strong>
-    <hr><a href="vk.com/plov6"> Наш вк</a>
+    <hr><a href="vk.com/plov6"> Наш вк</a><br>
+    <a href="/create_resident"> создать</a>
 </footer>
 </html>
