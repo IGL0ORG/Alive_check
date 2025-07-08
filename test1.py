@@ -18,22 +18,36 @@ SPREADSHEET_ID = '1baoDiv8FVUQ6Khk9DZpiaiBh1N0eqgzo-K9P3DogbNA'
 sheet = client.open_by_key(SPREADSHEET_ID).worksheet('Лист1')
 
 
-people=[{'ФИО':'СТепка','user_id':1,'комната':620, 'row':1},{'ФИО':'Алгег','user_id':3,'комната':617,'row':2},{'ФИО':'Русланчик','user_id':2,'комната':617,'row':3}]
-filters={'комната':617}
-for row in people:
-        
-        #try: 
-        for filter in list(filters.keys()): # прохождение по запрашиваемым фильтрам
-            if str(row[filter]) != str(filters[filter]):
-                #print(row)
-                del people[row['row']]
-people.append('\t\t')
+#people=[{'ФИО':'СТепка','user_id':1,'комната':620, 'row':1},{'ФИО':'Алгег','user_id':3,'комната':617,'row':2},{'ФИО':'Русланчик','user_id':2,'комната':617,'row':3}]
+#filters={'комната':617}
+#for row in people:        
+#        try: 
+#        for filter in list(filters.keys()): # прохождение по запрашиваемым фильтрам
+#            if str(row[filter]) != str(filters[filter]):
+#                print(row)
+#                del people[row['row']]
+#people.append('\t\t')
 #print(people)
 
 @app.route('/s')
 @app.route('/create_resident')
 def create_resident():
     return render_template('create_resident.html')
+
+def dict_to_sheet(worksheet,data):
+    ''' Оправляет данные в таблицу в конкретные ячейки'''
+    headers = worksheet.row_values(1)
+    # Создаем пустую строку с None по умолчанию
+    new_row = [None] * len(headers)
+    
+    # Заполняем значения в соответствующие столбцы
+    for key, value in data.items():
+        if key in headers:
+            col_index = headers.index(key)  # Индекс столбца (начиная с 0)
+            new_row[col_index] = value
+    
+    # Добавляем строку в конец таблицы
+    worksheet.append_row(new_row)
 
 
 @app.route('/add')
@@ -44,25 +58,27 @@ def add_resident():
     if request.method == 'POST':
         new_people={}
         try:
+            print(data_from_form)
             for cell in sheet.row_values(1):
-                for i in range(len(data_from_form)):
-                    print(data_from_form[str(cell)])
-                    
+                
+                try :
+                    data_from_form[str(cell)]
+                    print('ошибка не произошла',cell)
                     info=data_from_form[str(cell)]
                     print(cell,info)
                     new_people[cell]=info
-
-                    print(new_people)
+                except:
+                    print('произошла ошибка',cell)
+            print(new_people)
+            dict_to_sheet(sheet,new_people)                    
         except:
             print('произошла ошибка',cell)
-
-            
-            # Добавляем в конец таблицы
-        sheet.append_row(new_people)
+ 
         return redirect('/')
 
     else:
         return (render_template('create_resident.html'))
+    
 @app.route('/')
 def testing():
     records = sheet.get_all_records()
