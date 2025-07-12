@@ -2,8 +2,8 @@
 import gspread
 from google.oauth2.service_account import Credentials
 import time
-from gspread_formatting import *
-import database_inter as db
+#from gspread_formatting import *
+#import database_inter as db
 from flask import Flask, render_template, url_for,Response, request, abort, redirect
 
 

@@ -3,7 +3,7 @@
 from flask import Flask, Response, render_template, url_for, request, abort, redirect
 import gspread
 from google.oauth2.service_account import Credentials
-import database_inter as db
+#import database_inter as db
 
 
 app = Flask(__name__)
