@@ -1,0 +1,341 @@
+{% block title %}Страница пользователя{% endblock %}
+
+{% block body %}
+<style>
+    /* Стили для контейнера блоков */
+    .user-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin: 20px 0;
+    }
+
+    /* Общие стили для блоков */
+    .user-block {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        padding: 20px;
+        min-width: 250px;
+        flex: 1;
+        transition: transform 0.3s;
+    }
+
+    .user-block:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Специфичные стили для разных блоков */
+    .personal-block { border-left: 4px solid #4e73df; }
+    .room-block { border-left: 4px solid #1cc88a; }
+    .photo-block { 
+        border-left: 4px solid #f6c23e; 
+        text-align: center; 
+    }
+
+    /* Стили для элементов внутри блоков */
+    .info-item {
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .info-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #5a5c69;
+        display: block;
+    }
+
+    .info-value {
+        font-size: 1.1em;
+        color: #2e2f37;
+    }
+
+    .user-photo {
+        max-width: 200px;
+        border-radius: 8px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+</style>
+
+<form action="/user_page" method="POST">
+    {% if user != [] %}
+        {% set ФИО = user.ФИО.split(' ') %}
+        
+        <div class="user-container">
+            <!-- Персональная информация -->
+            <div class="user-block personal-block">
+                <div class="info-item">
+                    <span class="info-label">Фамилия</span>
+                    <span class="info-value">{{ ФИО[0] }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Имя</span>
+                    <span class="info-value">{{ ФИО[1] }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Отчество</span>
+                    <span class="info-value">{{ ФИО[2] }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Дата рождения</span>
+                    <span class="info-value">{{ user.дата_рождения }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Пол</span>
+                    <span class="info-value">{{ user.пол }}</span>
+                </div>
+            </div>
+
+            <!-- Информация о комнате и группе -->
+            <div class="user-block room-block">
+                <div class="info-item">
+                    <span class="info-label">Комната</span>
+                    <span class="info-value">{{ user.комната }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Группа</span>
+                    <span class="info-value">{{ user.группа }}</span>
+                </div>
+                <!-- Добавьте другие поля по необходимости -->
+                <div class="info-item">
+                    <span class="info-label">Статус</span>
+                    <span class="info-value">Активен</span>
+                </div>
+            </div>
+
+            <!-- Блок с фотографией -->
+            <div class="user-block photo-block">
+                <img src="https://media1.tenor.com/m/k5cZgAKH5jAAAAAd/bunny-rabbit.gif" alt="Фото пользователя" class="user-photo">
+                <div class="info-item">
+                    <span class="info-label">ID: {{ user.id }}</span>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</form>
+
+<!-- Ваш существующий код с блоками пользователя -->
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-col logo-col">
+            <h3>Система общежития</h3>
+            <p>Удобный сервис для управления проживанием в студенческих общежитиях</p>
+            <div class="social-links">
+                <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+        
+        <div class="footer-col">
+            <h4>Навигация</h4>
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="#">Мой профиль</a></li>
+                <li><a href="#">Расписание</a></li>
+                <li><a href="#">Платежи</a></li>
+                <li><a href="#">Сообщения</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-col">
+            <h4>Ресурсы</h4>
+            <ul>
+                <li><a href="#">Правила проживания</a></li>
+                <li><a href="#">Документы</a></li>
+                <li><a href="#">Частые вопросы</a></li>
+                <li><a href="#">Техподдержка</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-col contact-col">
+            <h4>Контакты</h4>
+            <ul>
+                <li><i class="fas fa-map-marker-alt"></i> г. Москва, ул. Студенческая, 15</li>
+                <li><i class="fas fa-phone"></i> +7 (495) 123-45-67</li>
+                <li><i class="fas fa-envelope"></i> dorm@university.ru</li>
+                <li><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 18:00</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>&copy; 2023 Университетский общежитийный комплекс. Все права защищены.</p>
+        <div class="legal-links">
+            <a href="#">Политика конфиденциальности</a>
+            <a href="#">Условия использования</a>
+        </div>
+    </div>
+</footer>
+
+<style>
+    /* Стили для футера */
+    .footer {
+        background: linear-gradient(135deg, #1a2a6c, #2a5298);
+        color: #fff;
+        padding: 60px 0 0;
+        margin-top: 40px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .footer-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        gap: 30px;
+    }
+    
+    .footer-col {
+        flex: 1;
+        min-width: 200px;
+        margin-bottom: 30px;
+    }
+    
+    .footer-col h4 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    
+    .footer-col h4:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background: #4ecca3;
+    }
+    
+    .footer-col ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .footer-col ul li {
+        margin-bottom: 12px;
+    }
+    
+    .footer-col ul li a {
+        color: #ddd;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: block;
+    }
+    
+    .footer-col ul li a:hover {
+        color: #4ecca3;
+        padding-left: 5px;
+    }
+    
+    .footer-col.contact-col li {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+    
+    .footer-col.contact-col i {
+        margin-right: 10px;
+        color: #4ecca3;
+        min-width: 20px;
+    }
+    
+    .logo-col {
+        max-width: 300px;
+    }
+    
+    .logo-col h3 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+    
+    .logo-col p {
+        color: #bbb;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    
+    .social-links {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .social-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        color: #fff;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .social-icon:hover {
+        background: #4ecca3;
+        transform: translateY(-3px);
+    }
+    
+    .footer-bottom {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 20px 0;
+        text-align: center;
+    }
+    
+    .footer-bottom p {
+        color: #aaa;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+    
+    .legal-links {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .legal-links a {
+        color: #ddd;
+        font-size: 14px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .legal-links a:hover {
+        color: #4ecca3;
+    }
+    
+    @media (max-width: 768px) {
+        .footer-container {
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .footer-col {
+            min-width: 100%;
+        }
+        
+        .legal-links {
+            flex-direction: column;
+            gap: 5px;
+        }
+    }
+</style>
+
+<!-- Подключение иконок Font Awesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+{% endblock %}

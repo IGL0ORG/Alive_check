@@ -2,22 +2,56 @@
 {%block title%}Запись о всех резидентах {%endblock%}
 {%block body%}
 <h1> Все резиденты</h1>
-    <form action="/residents" method="POST">
-        <input type="text" id="комната" placeholder="Введите комнату">
-        <button type="submit" aria-placeholder="это где" >дать</button>
+    <form action="" method="POST" target="_self">
+        <input type="text" id="комната" name='комната' placeholder="Введите комнату">
+        <button class="btn btn-primary" type="submit">дать</button>
     </form>
-    <div>
-        {%for резидент in resident_list%}
-            
-                
-                {{резидент.комната}} 
-                {{резидент.ФИО}} 
-                {{резидент.группа}}
-                <br>
-                
+    <form action="/user" method="POST">
+        <div class="input-group mb-3">
+            <input type="text" 
+                class="form-control" 
+                name="user_id" 
+                placeholder="Введите ID пользователя" 
+                required>
+            <button class="btn btn-primary" type="submit">Найти пользователя</button>
+        </div>
+    </form>
         
-        {%endfor%}
-    </div>
+        <div>
+
+            <div>
+            <table>
+                <thead>
+                <tr scope="row"></tr>
+                <tr scope="row"></tr>
+                <tr scope="row"></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th hidden></th>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+            
+            {%for резидент in resident_list%}
+                
+                    <p>
+                    {{резидент.комната}} 
+                    {{резидент.ФИО}} 
+                    {{резидент.группа}}
+                    
+                    <a href="/user/{{резидент.user_id}}" target="_blank" >{{резидент.user_id}}</a>
+                    
+                    </p>
+            
+            {%endfor%}
+
+            {%if room != ('' or None)%}
+                <h1>Таблица отсортирована по комнате {{room}}</h1>
+
+            {%endif%}
+        </div>
     
 
 

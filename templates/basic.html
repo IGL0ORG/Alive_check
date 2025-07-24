@@ -12,18 +12,17 @@
     <link rel="stylesheet" href="{{url_for('static',filename='css/global.css')}}">
     <title>{%block title%} {%endblock%}</title>
 </head>
+
 <body>
+<header id="header">    
+        <a href="vk.com/plov6" > Наш вк</a><br> 
+    </header>
+    <hr width="90%" >
+    <div id="blockbody">
     {%block body%}
     {%endblock%}
+    </div>
 </body>
-<footer class="container">
-    <form action="/home" method="POST" >
-        <button  type="submit" class="btn btn-success" name="button" value="test" query=" "> test button</button>
-
-    </form>
-    <strong>Узнавайте про нас первыми! </strong>
-    <hr><a href="vk.com/plov6"> Наш вк</a><br>
-    <a href="/add"> создать</a>
-    
-</footer>
+<hr width="90%">
+{%extends 'footer.html'%}
 </html>

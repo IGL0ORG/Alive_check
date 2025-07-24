@@ -2,7 +2,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 import time
-#from gspread_formatting import *
+from gspread_formatting import *
 #import database_inter as db
 from flask import Flask, render_template, url_for,Response, request, abort, redirect
 
@@ -16,7 +16,7 @@ client = gspread.authorize(CREDS)
 # Открытие таблицы
 SPREADSHEET_ID = '1baoDiv8FVUQ6Khk9DZpiaiBh1N0eqgzo-K9P3DogbNA'
 sheet = client.open_by_key(SPREADSHEET_ID).worksheet('Лист1')
-
+#sheet=client.open_by_url('https://docs.google.com/spreadsheets/d/1baoDiv8FVUQ6Khk9DZpiaiBh1N0eqgzo-K9P3DogbNA/edit?gid=0#gid=0').worksheet('Лист1')
 
 #people=[{'ФИО':'СТепка','user_id':1,'комната':620, 'row':1},{'ФИО':'Алгег','user_id':3,'комната':617,'row':2},{'ФИО':'Русланчик','user_id':2,'комната':617,'row':3}]
 #filters={'комната':617}
@@ -87,6 +87,38 @@ def testing():
     text_response = "\n".join(str(record) for record in records)
     return Response(text_response, mimetype='text/plain')
 
+
+#  #############  ###      ###      #############
+#       ###         ##    ###            ###
+#       ###          ##  ###             ###
+#       ###            ####              ###
+#       ###            ###               ###
+#       ###          ####                ###
+
+
+'''
+  #############  ###      ###      #############
+       ###         ##    ###            ###
+       ###          ##  ###             ###
+       ###            ####              ###
+       ###            ###               ###
+       ###          ####                ###
+'''
+
+
+@app.route('/user/<name>')
+def user_page(name):
+    records=sheet.get_all_records()
+    list_of_users=[]
+    for i in range(len(records)):
+        
+        if name in str(records[i]['ФИО']):
+            list_of_users.append(records[i])
+        else:
+            pass
+            #print (f'{name} is not in sheet \n {records[i]['ФИО']}') 
+    print(list_of_users)
+    return render_template('user_page.html',list_of_users=list_of_users)
 
 if __name__ == "__main__":
     app.run(debug=True)
